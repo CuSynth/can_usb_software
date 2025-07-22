@@ -30,18 +30,13 @@ lm_load_param = 0x8A
 
 ADCS_calib = 0x17
 ADCS_settings = 0x18
-LOG_TMI2_rec = 0x22
-LOG_TMI3_rec = 0x23
-LOG_TMI5_rec = 0x25
-LOG_TMI6_rec = 0x26
-LOG_TMI9_rec = 0x27
 
 TMI0_pack_t = 0x00
+TMI1_pack_t = 0x01
 TMI2_pack_t = 0x02
 TMI3_pack_t = 0x03
+TMI4_pack_t = 0x04
 TMI5_pack_t = 0x05
-TMI6_pack_t = 0x06
-TMI9_pack_t = 0x09
 
 def frame_parcer(frame):
     try:
@@ -306,10 +301,9 @@ def frame_parcer(frame):
                         #
                         #     data.append(["mt.power_limit", "0x%08X" %
                         #                  val_from(frame, header_size + 4, 4)])
-                    elif id_loc_data["data_code"] == TMI2_pack_t or\
-                            id_loc_data["data_code"] == LOG_TMI2_rec:
-                        data.append(["Тип данных", "ТМИ 2"])
-                        if id_loc_data["data_code"] == TMI2_pack_t or not first_loc_flag:
+                    elif id_loc_data["data_code"] == TMI1_pack_t:
+                        data.append(["Тип данных", "ТМИ 1"])
+                        if id_loc_data["data_code"] == TMI1_pack_t:
                             data.append(["Высота, 0.1м", "%d" %
                                          val_from(frame, 52 - 40, 4, signed=True)])
                         data.append(["Широта", "%d" % val_from(frame, 56 - 40, 4, signed=True)])
@@ -402,10 +396,9 @@ def frame_parcer(frame):
                                      val_from(frame, 164 - 40, 1)])
 
                         data.append(["Версия прошивки ТМИ2", "%d" % val_from(frame, 165-40, 1)])
-                    elif id_loc_data["data_code"] == TMI3_pack_t or\
-                            id_loc_data["data_code"] == LOG_TMI3_rec:
-                        data.append(["Тип данных", "ТМИ 3"])
-                        if id_loc_data["data_code"] == TMI3_pack_t or not first_loc_flag:
+                    elif id_loc_data["data_code"] == TMI2_pack_t:
+                        data.append(["Тип данных", "ТМИ 2"])
+                        if id_loc_data["data_code"] == TMI2_pack_t:
                             data.append(["оценка времени остановки", "%d" %
                                          val_from(frame, 180-168, 2)])
 
@@ -484,10 +477,9 @@ def frame_parcer(frame):
 
                         data.append(["версия прошивки", "%d" %
                                      val_from(frame, 293 - 168, 1)])
-                    elif id_loc_data["data_code"] == TMI5_pack_t or \
-                            id_loc_data["data_code"] == LOG_TMI5_rec:
-                        data.append(["Тип данных", "ТМИ 5"])
-                        if id_loc_data["data_code"] == TMI5_pack_t or not first_loc_flag:
+                    elif id_loc_data["data_code"] == TMI3_pack_t:
+                        data.append(["Тип данных", "ТМИ 3"])
+                        if id_loc_data["data_code"] == TMI3_pack_t:
                             data.append(["Высота", "%d" %
                                          val_from(frame, 308-296, 8, to_double=True)])
 
@@ -540,12 +532,11 @@ def frame_parcer(frame):
                         #              val_from(frame, 414-296, 7)])
                         data.append(["Версия прошивки", "%d" %
                                      val_from(frame, 421-296, 1)])
-                    elif id_loc_data["data_code"] == TMI6_pack_t or \
-                            id_loc_data["data_code"] == LOG_TMI6_rec:
-                        data.append(["Тип данных", "ТМИ 6"])
+                    elif id_loc_data["data_code"] == TMI4_pack_t:
+                        data.append(["Тип данных", "ТМИ 4"])
 
                         for i in range(6):
-                            if (id_loc_data["data_code"] == TMI6_pack_t or not first_loc_flag) \
+                            if (id_loc_data["data_code"] == TMI4_pack_t or not first_loc_flag) \
                                     and i == 0:
 
                                 data.append(["Калиброванная угловая скорость ДСГ %d" % i, "(%d, %d, %d)" %
@@ -576,9 +567,8 @@ def frame_parcer(frame):
                         #              val_from(frame, 548-424, 1)])
                         data.append(["Версия прошивки", "%d" %
                                      val_from(frame, 549-424, 1)])
-                    elif id_loc_data["data_code"] == TMI9_pack_t or \
-                            id_loc_data["data_code"] == LOG_TMI9_rec:
-                        data.append(["Тип данных", "ТМИ 9"])
+                    elif id_loc_data["data_code"] == TMI5_pack_t:
+                        data.append(["Тип данных", "ТМИ 5"])
                         # data.append(["ТМИ9 резерв", "%d" %
                         #              val_from(frame, , 7)])
 
